@@ -34,7 +34,8 @@ if (not defined $output) {
 
 print "Parsing file...\n";
 
-my %allValues;
+my %allValues; # [String: [String, parameters...]]
+
 my @links;
 
 open(my $fh, '<:encoding(UTF-8)', $filename) or die "Could not open file '$filename' $!";
@@ -69,36 +70,15 @@ while (my $row = <$fh>) {
       }
     }
 
+    # Dump in hash 
+
+    $allValues{ $key } = [ $string, @parameters ];
+
     # Extract Links
 
     my @matches = ($string =~ m/\[.+?\]\((.+?)\)/g);
     push(@links, @matches);
 
-    # Split key into multiple levels & build multi-level dictionary
-
-    my @keyLevels = split /\./, $key;
-    my $currentLevel = 0;
-
-    my $dict = \%allValues;
-
-    for my $level (@keyLevels) {
-      if ($currentLevel == scalar @keyLevels - 1) {
-        if (defined $dict->{$level}) {
-          print STDERR "$filename:$.: error : Localization key \"$key\" is already a folder and cannot be used.\n";
-          exit 1;
-        } else {
-          $dict->{ $level } = [ $string, @parameters ];
-        }    
-      } else {
-        if (defined $dict->{$level}) {
-          #It's a hash
-        } else {
-          $dict->{ $level } = {};
-        }
-        $dict = $dict->{ $level };
-        $currentLevel = $currentLevel + 1;
-      }
-    }
   } else {
     # Not parsable
     print "$filename:$.: error : Could not parse line: $row\n";
@@ -106,24 +86,49 @@ while (my $row = <$fh>) {
   }
 }
 
-# Extract all links with format []()
+# Build multi-level hash
 
-#my @links = ();
+my %allValuesMultiLevel;
 
-#for my $string (values %localizedStrings) {
-#  my @matches = ($string =~ m/\[.+?\]\((.+?)\)/g);
-#  push(@links, @matches)
-#}
+for my $key (keys %allValues) {
+
+  # Split key into multiple levels & build multi-level dictionary
+
+  my @keyLevels = split /\./, $key;
+  my $currentLevel = 0;
+
+  my $dict = \%allValuesMultiLevel;
+
+  for my $level (@keyLevels) {
+    if ($currentLevel == scalar @keyLevels - 1) {
+      if (defined $dict->{$level}) {
+        print STDERR "$filename:$.: error : Localization key \"$key\" is already a folder and cannot be used.\n";
+        exit 1;
+      } else {
+        $dict->{ $level } = $allValues { $key };
+      }    
+    } else {
+      if (defined $dict->{$level}) {
+        #It's a hash
+      } else {
+        $dict->{ $level } = {};
+      }
+      $dict = $dict->{ $level };
+      $currentLevel = $currentLevel + 1;
+    }
+  }
+}
 
 # Print Swift file
 
 print("Generating template...\n");
 
-my $identationLevel = 2;
+my $identationLevel = 1;
 my $tab = "    ";
 
 my $folderRef = \%allValues;
 my $linksString = "";
+
 
 sub printHashAsString {
   my $hashRef = shift;
@@ -163,7 +168,7 @@ sub printHashAsString {
   for my $key (@nodeKeys) {
     my $hashString = printHashAsString( $hashRef->{ $key }, $identationLevel + 1);
     $result = "$result\n\n";
-    $result = "$result$indentation enum $key {\n";
+    $result = "$result$indentation enum $key: LocalizationKey {\n";
     $result = "$result$indentation $hashString\n";
     $result = "$result$indentation }";
   }
@@ -171,13 +176,37 @@ sub printHashAsString {
   return $result;
 }
 
-my $keysString = printHashAsString(\%allValues, $identationLevel);
+my $keysString = printHashAsString(\%allValuesMultiLevel, $identationLevel);
+
+my $indentation = $tab x 2;
+chop $indentation;
 
 for my $link (@links) {
-  my $indentation = $tab x 2;
-  chop $indentation;
-
   $linksString = "$linksString\n$indentation case $link";
+}
+
+my $rawValuesString = "";
+my $parametersString = "";
+
+for my $key (sort keys %allValues) {
+  $rawValuesString = "$rawValuesString\n$indentation case Strings.$key: return \"$key\"";
+
+  my @parameters = @{$allValues { $key }}; 
+  shift(@parameters);
+
+  if (scalar @parameters == 0) {
+      $parametersString = "$parametersString\n$indentation case Strings.$key: return [:]";
+    } else {
+
+      
+      my @parametersWithType = map { "let $_" } @parameters;
+      my $parametersArgumentString = join(", ", @parametersWithType);
+
+      my @parametersAsDict = map { "\"$_\": $_" } @parameters;
+      my $parametersAsDictString = join(", ", @parametersAsDict);
+        
+      $parametersString = "$parametersString\n$indentation case Strings.$key($parametersArgumentString): return [$parametersAsDictString]";
+    }
 }
 
 
@@ -191,17 +220,26 @@ my $template = <<"END_TEMPLATE";
 //  Copyright (c) $year $team. All rights reserved. 
 //
 
-extension String {
-
-    enum Key {
-        $keysString
-    }
-
-    enum Link {
-        $linksString
-    }
+enum Strings: LocalizationKey {
+  $keysString
 }
 
+// MARK: - Extensions
+    
+extension LocalizationKey {
+
+    static func getRawValue(key: LocalizationKey) -> String {
+        switch key {$rawValuesString
+        default: return ""
+        }
+    }
+    
+    static func getParameters(key: LocalizationKey) -> [String: String] {
+        switch key {$parametersString
+        default: return [:]
+        }
+    }
+}
 END_TEMPLATE
 
 open($fh, '>', $output) or die "Could not open file '$output' $!";

@@ -19,9 +19,9 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        label1.text = String(key: String.Key.common.ok)
-        label2.text = String(key: String.Key.other.giuseppe(beautiful: "Hello"))
-//        label3.text = String(key: , parameters: [.input: "2", .profile: "5"])
+        label1.text = String(key: Strings.common.ok)
+        label2.text = String(key: Strings.other.giuseppe(beautiful: "Hello"))
+        label3.text = String(key: Strings.registration.)
         
 //        String(key: String.Key.chat.wrongInput(input: "Hello", solution: "Solution"))
 //        String(key: String.Key.registration.incorrectPassword)
