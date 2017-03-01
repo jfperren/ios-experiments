@@ -1,0 +1,19 @@
+/* 
+  Localizable.strings
+  LocalizationTest
+
+  Created by Julien Perrenoud on 2/10/17.
+  Copyright © 2017 BuddyHopp. All rights reserved.
+*/
+
+"common.ok" = "OK";
+"common.cancel" = "Cancel";
+"common.special.another" = "Greetings {{profile}}";
+"chat.wrongInput" = "You entered {{input}}, but the solution was {{solution}}";
+"chat.categoryTitle" = "Create an offer for the category *{{category}}*, for *free*";
+"registration.incorrectPassword" = "This password is incorrect. [Forgot your password?](forgotPassword) or [create a new password ?](createPassword)";
+"other.giuseppe" = "Giuseppe is {{beautiful}}";
+"singleLevel" = "This is a single level sentence";
+
+
+"chat.topLevel.test" = "test top level";
