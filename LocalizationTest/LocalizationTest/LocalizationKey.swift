@@ -13,9 +13,6 @@ protocol LocalizationKey {
     var rawValue: String { get }
     var parameters: [String: String] { get }
     
-    static func getRawValue(key: LocalizationKey) -> String
-    static func getParameters(key: LocalizationKey) -> [String: String]
-    
 }
 
 extension LocalizationKey {

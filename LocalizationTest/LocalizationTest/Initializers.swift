@@ -8,21 +8,7 @@
 
 import Foundation
 
-extension String {
-    
-    init(key: LocalizationKey) {
 
-        // Replace parameters with correct value.
-        
-        var string = NSLocalizedString(key.rawValue, comment: "")
-        
-        for (parameter, value) in key.parameters {
-            string = string.replacingOccurrences(of: "{{\(parameter)}}", with: value)
-        }
-        
-        self = string
-    }
-}
 
 //extension NSAttributedString {
 //    

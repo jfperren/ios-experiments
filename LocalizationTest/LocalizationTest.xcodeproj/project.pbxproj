@@ -22,7 +22,6 @@
 
 /* Begin PBXBuildFile section */
 		CD4E268B1E6368DD0028A223 /* String+Keys.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD4E268A1E6368DD0028A223 /* String+Keys.swift */; };
-		CDB84BA01E654951005D29AC /* LocalizationKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDB84B9F1E654951005D29AC /* LocalizationKey.swift */; };
 		CDF4551B1E4E218A001491C7 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDF4551A1E4E218A001491C7 /* AppDelegate.swift */; };
 		CDF4551D1E4E218A001491C7 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDF4551C1E4E218A001491C7 /* ViewController.swift */; };
 		CDF455201E4E218A001491C7 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CDF4551E1E4E218A001491C7 /* Main.storyboard */; };
@@ -35,7 +34,6 @@
 
 /* Begin PBXFileReference section */
 		CD4E268A1E6368DD0028A223 /* String+Keys.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String+Keys.swift"; sourceTree = "<group>"; };
-		CDB84B9F1E654951005D29AC /* LocalizationKey.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocalizationKey.swift; sourceTree = "<group>"; };
 		CDF455171E4E218A001491C7 /* LocalizationTest.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LocalizationTest.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CDF4551A1E4E218A001491C7 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		CDF4551C1E4E218A001491C7 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -96,7 +94,6 @@
 			children = (
 				CD4E268A1E6368DD0028A223 /* String+Keys.swift */,
 				CDF4552F1E4E2221001491C7 /* Initializers.swift */,
-				CDB84B9F1E654951005D29AC /* LocalizationKey.swift */,
 			);
 			name = "String Extensions";
 			sourceTree = "<group>";
@@ -206,7 +203,6 @@
 			files = (
 				CDF455301E4E2221001491C7 /* Initializers.swift in Sources */,
 				CDF455391E4E23E3001491C7 /* UILabel+Key.swift in Sources */,
-				CDB84BA01E654951005D29AC /* LocalizationKey.swift in Sources */,
 				CDF4551D1E4E218A001491C7 /* ViewController.swift in Sources */,
 				CD4E268B1E6368DD0028A223 /* String+Keys.swift in Sources */,
 				CDF4551B1E4E218A001491C7 /* AppDelegate.swift in Sources */,
