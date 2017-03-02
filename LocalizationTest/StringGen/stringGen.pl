@@ -6,29 +6,87 @@
 
 use strict;
 use warnings;
-use Data::Dumper;
-use feature 'say';
+
+
+
+## -- CONFIGURATION -- 
+
 
 # Get file as first argument
 
-my $filename = $ARGV[0];
-my $output = $ARGV[1];
-my $projectname = "LocalizableTest";
-my $author = "Julien Perrenoud";
-my $team = "BuddyHopp";
+if (scalar @ARGV != 2) {
+  die "Should provide exactly 2 arguments, i.e. the path to the config file and the template";
+}
+
+my $config_file = $ARGV[0];
+my $template_file = $ARGV[1];
+
+# Parse configuration
+
+my $author;
+my $project;
+my $team;
+my $enum_name;
+my $protocol_name;
+my $output_file;
+my $output_path;
+my $input_file;
+
+my %config_params = (
+  "Author" => \$author,
+  "Project" => \$project,
+  "Team" => \$team,
+  "Enum Name" => \$enum_name,
+  "Protocol Name" => \$protocol_name,
+  "Output File Name" => \$output_file,
+  "Output File Directory" => \$output_path,
+  "Localizable.strings" => \$input_file,
+);
+
+my $last_config_param_ref;
+
+open(my $config_iterator, '<:encoding(UTF-8)', $config_file) or die "Could not open config file '$config_file' $!\n";
+
+while (my $row = <$config_iterator>) {
+  chomp $row;
+
+  if ($row =~ /<key>(?<key>.+)<\/key>/) {
+
+    my $key = $+{ key };
+
+    if (not defined $config_params { $key }) {
+      die "Unknown config parameter: $key\n";
+    }
+
+    $last_config_param_ref = $config_params { $key };
+
+    print "GOT KEY $key\n";
+
+  } elsif ($row =~ /<string>(?<value>.+)<\/string>/) {
+
+    $$last_config_param_ref = $+{ value };
+
+    print "GOT VALUE $$last_config_param_ref\n";
+  }
+}
+
+#for my $key (keys %config_params) {
+
+#  if (not defined ${ $config_params { $key } }) {
+#    die "Missing config parameter: $key\n";
+#  }
+#}
+
+# Calculate time
+
 my ($min, $hour, $day, $month, $year)=(localtime)[1, 2, 3, 4, 5];
 $year = $year + 1900;
 $month = $month + 1;
 
-if (not defined $filename) {
-	print "Error: no Localizable.string file provided\n";
-	exit;
-}
 
-if (not defined $output) {
-  print "Error: no output file name provided\n";
-  exit;
-}
+
+## -- PARSING -- 
+
 
 # Read values from file
 
@@ -38,7 +96,7 @@ my %allValues; # [String: [String, parameters...]]
 
 my @links;
 
-open(my $fh, '<:encoding(UTF-8)', $filename) or die "Could not open file '$filename' $!";
+open(my $fh, '<:encoding(UTF-8)', $input_file) or die "Could not open file '$input_file' $!";
 
 while (my $row = <$fh>) {
   chomp $row;
@@ -55,7 +113,7 @@ while (my $row = <$fh>) {
     if ($key =~ /^[a-z][A-Za-z]*(\.[a-z][A-Za-z]*)*$/) {
       # correct
     } else {
-      print "$filename:$.: warning : Localization key \"$key\" does not follow camelCase format.\n";
+      print "$input_file:$.: warning : Localization key \"$key\" does not follow camelCase format.\n";
     }
     
     # Extract parameters
@@ -66,7 +124,7 @@ while (my $row = <$fh>) {
       if ($parameter =~ /^[a-z][A-Za-z]*$/) {
         # Camel case
       } else {
-        print "$filename:$.: warning : parameter $parameter does not follow camelCase format\n";
+        print "$input_file:$.: warning : parameter $parameter does not follow camelCase format\n";
       }
     }
 
@@ -81,7 +139,7 @@ while (my $row = <$fh>) {
 
   } else {
     # Not parsable
-    print "$filename:$.: error : Could not parse line: $row\n";
+    print "$input_file:$.: error : Could not parse line: $row\n";
   	exit;
   }
 }
@@ -102,7 +160,7 @@ for my $key (keys %allValues) {
   for my $level (@keyLevels) {
     if ($currentLevel == scalar @keyLevels - 1) {
       if (defined $dict->{$level}) {
-        print STDERR "$filename:$.: error : Localization key \"$key\" is already a folder and cannot be used.\n";
+        print STDERR "$input_file:$.: error : Localization key \"$key\" is already a folder and cannot be used.\n";
         exit 1;
       } else {
         $dict->{ $level } = $allValues { $key };
@@ -118,6 +176,10 @@ for my $key (keys %allValues) {
     }
   }
 }
+
+
+## --- PRINTING ---
+
 
 # Print Swift file
 
@@ -168,7 +230,7 @@ sub printHashAsString {
   for my $key (@nodeKeys) {
     my $hashString = printHashAsString( $hashRef->{ $key }, $identationLevel + 1);
     $result = "$result\n\n";
-    $result = "$result$indentation enum $key: LocalizationKey {\n";
+    $result = "$result$indentation enum $key: $protocol_name {\n";
     $result = "$result$indentation $hashString\n";
     $result = "$result$indentation }";
   }
@@ -189,13 +251,13 @@ my $rawValuesString = "";
 my $parametersString = "";
 
 for my $key (sort keys %allValues) {
-  $rawValuesString = "$rawValuesString\n$indentation case Strings.$key: return \"$key\"";
+  $rawValuesString = "$rawValuesString\n$indentation case $enum_name.$key: return \"$key\"";
 
   my @parameters = @{$allValues { $key }}; 
   shift(@parameters);
 
   if (scalar @parameters == 0) {
-      $parametersString = "$parametersString\n$indentation case Strings.$key: return [:]";
+      $parametersString = "$parametersString\n$indentation case $enum_name.$key: return [:]";
     } else {
 
       
@@ -205,30 +267,29 @@ for my $key (sort keys %allValues) {
       my @parametersAsDict = map { "\"$_\": $_" } @parameters;
       my $parametersAsDictString = join(", ", @parametersAsDict);
         
-      $parametersString = "$parametersString\n$indentation case Strings.$key($parametersArgumentString): return [$parametersAsDictString]";
+      $parametersString = "$parametersString\n$indentation case $enum_name.$key($parametersArgumentString): return [$parametersAsDictString]";
     }
 }
 
-my $file = "template";
 my $template = do {
     local $/ = undef;
-    open my $fh, "<", $file
-        or die "could not open $file: $!";
+    open my $fh, "<", $template_file
+        or die "could not open $template_file: $!";
     <$fh>;
 };
 
 my %variables = (
   AUTHOR => $author,
-  FILE_NAME => $filename,
-  PROJECT_NAME => $projectname,
+  FILE_NAME => $output_file,
+  PROJECT_NAME => $project,
   TEAM => $team,
   YEAR => $year,
   MONTH => $month,
   DAY => $day,
   HOUR => $hour,
   MINUTE => $min,
-  PROTOCOL_NAME => "LocalizationKey",
-  ENUM_NAME => "Strings",
+  PROTOCOL_NAME => $protocol_name,
+  ENUM_NAME => $enum_name,
   KEYS_STRING => $keysString,
   RAW_VALUES_STRING => $rawValuesString,
   PARAMETERS_STRING => $parametersString
@@ -239,15 +300,9 @@ for my $key (keys %variables) {
   $template =~ s/$key/$value/g;
 }
 
-open($fh, '>', $output) or die "Could not open file '$output' $!";
+open($fh, '>', "$output_path/$output_file") or die "Could not open file '$output_path/$output_file' $!";
 print $fh $template;
 close $fh;
-
-### Add to project target
-
-print "Adding to project $projectname...\n";
-
-my $result = `ls -la`;
 
 print "Execution Successful.\n";
 

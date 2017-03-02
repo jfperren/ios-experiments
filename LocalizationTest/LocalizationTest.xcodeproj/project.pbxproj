@@ -21,29 +21,28 @@
 /* End PBXAggregateTarget section */
 
 /* Begin PBXBuildFile section */
-		CD4E268B1E6368DD0028A223 /* String+Keys.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD4E268A1E6368DD0028A223 /* String+Keys.swift */; };
+		CDB84BB91E67FC1D005D29AC /* Strings.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDB84BB81E67FC1D005D29AC /* Strings.swift */; };
 		CDF4551B1E4E218A001491C7 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDF4551A1E4E218A001491C7 /* AppDelegate.swift */; };
 		CDF4551D1E4E218A001491C7 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDF4551C1E4E218A001491C7 /* ViewController.swift */; };
 		CDF455201E4E218A001491C7 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CDF4551E1E4E218A001491C7 /* Main.storyboard */; };
 		CDF455221E4E218A001491C7 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CDF455211E4E218A001491C7 /* Assets.xcassets */; };
 		CDF455251E4E218A001491C7 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CDF455231E4E218A001491C7 /* LaunchScreen.storyboard */; };
-		CDF455301E4E2221001491C7 /* Initializers.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDF4552F1E4E2221001491C7 /* Initializers.swift */; };
 		CDF455361E4E2311001491C7 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = CDF455351E4E2311001491C7 /* Localizable.strings */; };
-		CDF455391E4E23E3001491C7 /* UILabel+Key.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDF455381E4E23E3001491C7 /* UILabel+Key.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		CD4E268A1E6368DD0028A223 /* String+Keys.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String+Keys.swift"; sourceTree = "<group>"; };
+		CDB84BB41E67F991005D29AC /* stringGen.pl */ = {isa = PBXFileReference; lastKnownFileType = text.script.perl; name = stringGen.pl; path = StringGen/stringGen.pl; sourceTree = SOURCE_ROOT; };
+		CDB84BB51E67F991005D29AC /* stringGen.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = stringGen.plist; path = StringGen/stringGen.plist; sourceTree = SOURCE_ROOT; };
+		CDB84BB61E67F991005D29AC /* template */ = {isa = PBXFileReference; lastKnownFileType = text; name = template; path = StringGen/template; sourceTree = SOURCE_ROOT; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
+		CDB84BB81E67FC1D005D29AC /* Strings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Strings.swift; path = Resources/Strings.swift; sourceTree = "<group>"; };
 		CDF455171E4E218A001491C7 /* LocalizationTest.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LocalizationTest.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CDF4551A1E4E218A001491C7 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		CDF4551C1E4E218A001491C7 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		CDF455211E4E218A001491C7 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		CDF455261E4E218A001491C7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		CDF4552F1E4E2221001491C7 /* Initializers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Initializers.swift; sourceTree = "<group>"; };
 		CDF455311E4E22A2001491C7 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = en; path = en.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		CDF455321E4E22A2001491C7 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = en; path = en.lproj/Main.storyboard; sourceTree = "<group>"; };
 		CDF455351E4E2311001491C7 /* Localizable.strings */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; path = Localizable.strings; sourceTree = "<group>"; };
-		CDF455381E4E23E3001491C7 /* UILabel+Key.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UILabel+Key.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -57,6 +56,24 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		CDB84BB31E67F980005D29AC /* StringGen */ = {
+			isa = PBXGroup;
+			children = (
+				CDB84BB41E67F991005D29AC /* stringGen.pl */,
+				CDB84BB51E67F991005D29AC /* stringGen.plist */,
+				CDB84BB61E67F991005D29AC /* template */,
+			);
+			name = StringGen;
+			sourceTree = "<group>";
+		};
+		CDB84BB71E67FBDF005D29AC /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				CDB84BB81E67FC1D005D29AC /* Strings.swift */,
+			);
+			name = Resources;
+			sourceTree = "<group>";
+		};
 		CDF4550E1E4E218A001491C7 = {
 			isa = PBXGroup;
 			children = (
@@ -77,8 +94,8 @@
 		CDF455191E4E218A001491C7 /* LocalizationTest */ = {
 			isa = PBXGroup;
 			children = (
-				CDF455371E4E23D2001491C7 /* View Extensions */,
-				CDF4552C1E4E21C4001491C7 /* String Extensions */,
+				CDB84BB71E67FBDF005D29AC /* Resources */,
+				CDB84BB31E67F980005D29AC /* StringGen */,
 				CDF4551A1E4E218A001491C7 /* AppDelegate.swift */,
 				CDF4551C1E4E218A001491C7 /* ViewController.swift */,
 				CDF4551E1E4E218A001491C7 /* Main.storyboard */,
@@ -87,23 +104,6 @@
 				CDF455261E4E218A001491C7 /* Info.plist */,
 			);
 			path = LocalizationTest;
-			sourceTree = "<group>";
-		};
-		CDF4552C1E4E21C4001491C7 /* String Extensions */ = {
-			isa = PBXGroup;
-			children = (
-				CD4E268A1E6368DD0028A223 /* String+Keys.swift */,
-				CDF4552F1E4E2221001491C7 /* Initializers.swift */,
-			);
-			name = "String Extensions";
-			sourceTree = "<group>";
-		};
-		CDF455371E4E23D2001491C7 /* View Extensions */ = {
-			isa = PBXGroup;
-			children = (
-				CDF455381E4E23E3001491C7 /* UILabel+Key.swift */,
-			);
-			name = "View Extensions";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -192,7 +192,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "./stringGen.pl Localizable.strings LocalizationTest/String+Keys.swift";
+			shellScript = "./StringGen/stringGen.pl StringGen/stringGen.plist StringGen/template";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -201,10 +201,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				CDF455301E4E2221001491C7 /* Initializers.swift in Sources */,
-				CDF455391E4E23E3001491C7 /* UILabel+Key.swift in Sources */,
 				CDF4551D1E4E218A001491C7 /* ViewController.swift in Sources */,
-				CD4E268B1E6368DD0028A223 /* String+Keys.swift in Sources */,
+				CDB84BB91E67FC1D005D29AC /* Strings.swift in Sources */,
 				CDF4551B1E4E218A001491C7 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

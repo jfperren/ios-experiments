@@ -6,14 +6,29 @@
   Copyright © 2017 BuddyHopp. All rights reserved.
 */
 
+"keyWithoutFolder" = "This is a key without any folder";
+"otherKeyWithoutFolder" = "This is not used anymore";
+// "wrong_key_format" = "This key is not with the correct format";
+// "wrongLineFormat" = "This line doesn't have semicolons"
+
+
+// MARK: - Common
+
 "common.ok" = "OK";
 "common.cancel" = "Cancel";
-"common.special.another" = "Greetings {{profile}}";
+"common.greetings" = "Greetings {{profile}}";
+
+// MARK: - Chat
+
 "chat.wrongInput" = "You entered {{input}}, but the solution was {{solution}}";
 "chat.categoryTitle" = "Create an offer for the category *{{category}}*, for *free*";
+
+"chat.topBar.title" = "Chat with {{otherPersonName}}";
+"chat.topBar.leftButton" = "Cancel";
+"chat.topBar.subtitle" = "Last connected {{date}}";
+"chat.topBar.rightButton" = "Done";
+
+// MARK: - Registration
+
 "registration.incorrectPassword" = "This password is incorrect. [Forgot your password?](forgotPassword) or [create a new password ?](createPassword)";
-"other.giuseppe" = "Giuseppe is {{beautiful}}";
-"singleLevel" = "This is a single level sentence";
-
-
-"chat.topLevel.test" = "test top level";
+"registration.key.with.very.deep.hierarchy" = "This is a localized string with a deep hierarchy";

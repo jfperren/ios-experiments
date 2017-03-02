@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>Author</key>
+	<string>Julien Perrenoud</string>
+	<key>Project</key>
+	<string>LocalizationTest</string>
+	<key>Team</key>
+	<string>BuddyHopp</string>
+	<key>Enum Name</key>
+	<string>Strings</string>
+	<key>Protocol Name</key>
+	<string>LocalizationKey</string>
+	<key>Output File Name</key>
+	<string>Strings.swift</string>
+	<key>Output File Directory</key>
+	<string>LocalizationTest/Resources</string>
+	<key>Localizable.strings</key>
+	<array>
+		<string>Localizable.strings</string>
+	</array>
+</dict>
+</plist>

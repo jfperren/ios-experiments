@@ -17,9 +17,7 @@ enum ENUM_NAME: PROTOCOL_NAME {
 extension String {
     
     init(key: PROTOCOL_NAME, comment: String = "") {
-        
-        // Replace parameters with correct value.
-        
+
         var string = NSLocalizedString(key.rawValue, comment: comment)
         
         for (parameter, value) in key.parameters {
@@ -60,6 +58,7 @@ extension PROTOCOL_NAME {
 // MARK: - Helpers
 
 fileprivate func getRawValue(key: PROTOCOL_NAME) -> String {
+
     switch key {
     RAW_VALUES_STRING
     default: return ""
@@ -67,6 +66,7 @@ fileprivate func getRawValue(key: PROTOCOL_NAME) -> String {
 }
 
 fileprivate func getParameters(key: PROTOCOL_NAME) -> [String: String] {
+
     switch key {
     PARAMETERS_STRING
     default: return [:]
